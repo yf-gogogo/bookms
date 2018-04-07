@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 const mysql_seq = new Sequelize('bookms', 'root', '123456', {
-    host: 'localhost',
+    host: '119.29.245.143',
     dialect: 'mysql',
     operatorsAliases: false,
 

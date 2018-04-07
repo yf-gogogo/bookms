@@ -4,7 +4,7 @@ var f_user = require('../models/user');
 var s_user = f_user(db_seq,DataTypes);
 
 function getUserBywxid(req,res) {
-    s_user.findAll().then(result =>{
+    s_user.findOne().then(result =>{
         res.send(result.dataValues);
     })
 
