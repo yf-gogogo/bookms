@@ -31,6 +31,11 @@ module.exports = function(sequelize, DataTypes) {
     return_date: {
       type: DataTypes.DATEONLY,
       allowNull: true
+    },
+    borrow_status: {
+      type: DataTypes.ENUM('1','0'),
+      allowNull: true,
+      defaultValue: '0'
     }
   }, {
     tableName: 'borrow_record',

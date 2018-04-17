@@ -9,7 +9,14 @@ function getUserBywxid(req,res) {
     })
 
 }
+function updateUserInfo(req,res){
 
+}
+function getOpenid(req,res){
+    let code = req.query.code;
+
+}
 module.exports = {
     getUserBywxid,
+    updateUserInfo,
 };
