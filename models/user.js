@@ -28,6 +28,10 @@ module.exports = function(sequelize, DataTypes) {
     user_email: {
       type: DataTypes.STRING(20),
       allowNull: true
+    },
+    user_nickname: {
+      type: DataTypes.STRING(20),
+      allowNull: true
     }
   }, {
     tableName: 'user',
