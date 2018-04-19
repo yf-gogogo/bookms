@@ -10,26 +10,18 @@ module.exports = function(sequelize, DataTypes) {
     },
     user_id: {
       type: DataTypes.INTEGER(11),
-      allowNull: true,
-      references: {
-        model: 'user',
-        key: 'user_id'
-      }
+      allowNull: true
     },
     book_id: {
       type: DataTypes.INTEGER(11),
-      allowNull: true,
-      references: {
-        model: 'book',
-        key: 'book_id'
-      }
+      allowNull: true
     },
     borrow_date: {
-      type: DataTypes.DATEONLY,
+      type: DataTypes.DATE,
       allowNull: true
     },
     return_date: {
-      type: DataTypes.DATEONLY,
+      type: DataTypes.DATE,
       allowNull: true
     },
     borrow_status: {
@@ -39,6 +31,6 @@ module.exports = function(sequelize, DataTypes) {
     }
   }, {
     tableName: 'borrow_record',
-      timestamps:false,
+      timestamps:false
   });
 };

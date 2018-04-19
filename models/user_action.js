@@ -13,16 +13,16 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     action_type: {
-      type: DataTypes.ENUM('1','2'),
+      type: DataTypes.ENUM('1','2','3'),
       allowNull: true,
       defaultValue: '1'
     },
     action_date: {
-      type: DataTypes.DATEONLY,
+      type: DataTypes.DATE,
       allowNull: true
     }
   }, {
     tableName: 'user_action',
-      timestamps:false,
+      timestamps:false
   });
 };

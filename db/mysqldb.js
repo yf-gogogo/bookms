@@ -1,7 +1,11 @@
 const Sequelize = require('sequelize');
-const mysql_seq = new Sequelize('bookms', 'root', '123456', {
-    host: '119.29.245.143',
-    dialect: 'mysql',
+const conf = require('../configure')
+const mysql_seq = new Sequelize(
+    conf.db.database,
+    conf.db.username,
+    conf.db.password, {
+    host: conf.db.host,
+    dialect: conf.db.dialect,
     operatorsAliases: false,
 
     pool: {

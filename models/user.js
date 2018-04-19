@@ -14,7 +14,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     user_cardid: {
       type: DataTypes.STRING(20),
-      allowNull: false
+      allowNull: true
     },
     user_phone: {
       type: DataTypes.STRING(20),
@@ -32,9 +32,17 @@ module.exports = function(sequelize, DataTypes) {
     user_nickname: {
       type: DataTypes.STRING(20),
       allowNull: true
+    },
+    session_key: {
+      type: DataTypes.STRING(50),
+      allowNull: true
+    },
+    openid: {
+      type: DataTypes.STRING(50),
+      allowNull: false
     }
   }, {
     tableName: 'user',
-      timestamps:false,
+      timestamps:false
   });
 };

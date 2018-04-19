@@ -22,6 +22,6 @@ module.exports = function(sequelize, DataTypes) {
     }
   }, {
     tableName: 'order_record',
-      timestamps:false,
+      timestamps:false
   });
 };
