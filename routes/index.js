@@ -9,4 +9,5 @@ router.get('/', function(req, res, next) {
 
 router.get('/userinfo',api_user.getUserBywxid);
 router.get('/booklist',api_book.getBookList);
+
 module.exports = router;
