@@ -15,36 +15,52 @@ function getBookList(req,res) {
     })
 }
 //根据user_id查借阅记录
+s_book_borrow.belongsTo(s_book,{foreignKey:'book_id'})
 function getBorrowListByUserid(req,res) {
     var user_id = req.query.user_id;
     s_book_borrow.findAll({
-        attributes:['book_id'],
+        attributes:['book_id','borrow_status','borrow_date'],
         where:{
             user_id:user_id,
+        },
+        include:{
+            model:s_book,
+            attributes:['book_name','book_cover'],
+            where:{book_id:DataTypes.col('borrow_record.book_id')}
         }
 
     }).then(result =>{
-        console.log(result.length)
+        console.log(result)
+        var list = []
         if (result.length > 0) {
+            // for(let i=0;i<result.length;i++){
+            //     list.push(result[i].book)
+            // }
             res.json({ errorcode: '0', msg: result });
         } else {
-            res.json({ errorcode: '1', msg: 'no record' });
+            res.json({ errorcode: '1', msg: result });
         }
     })
 }
 //根据user_id查预定记录
+s_book_order.belongsTo(s_book,{foreignKey:'book_id'})
 function getOrderListByUserid(req,res) {
     var user_id = req.query.user_id;
     s_book_order.findAll({
-        attributes:['book_id'],
+        attributes:['book_id','order_date'],
         where:{
             user_id:user_id,
+        },
+        include:{
+            model:s_book,
+            attributes:['book_name','book_cover'],
+            where:{book_id:DataTypes.col('order_record.book_id')}
         }
     }).then(result =>{
         if (result.length > 0) {
             res.json({ errorcode: '0', msg: result });
         } else {
-            res.json({ errorcode: '1', msg: 'no record' });
+            res.json({ errorcode: '1', msg: result });
         }
     })
 }
