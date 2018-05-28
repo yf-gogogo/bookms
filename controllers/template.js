@@ -12,30 +12,26 @@ var conf = require('../configure');
 var querystring = require("querystring");
 var request = require('request')
 var utils = require('../utils')
+var nodemailer = require('nodemailer')
 
-
-//发送图书可取申请
-async function sendTemplate1(req,res) {
-    let openid;
-    let formid;
-    let bookname;
+//图书可取模版
+async function sendTemplate1(form_id,bookname,openid){
     let a = new Date().getTime();
-    console.log( a,conf.template.starttime)
-    console.log((a-conf.template.starttime)/1000)
+    // console.log( a,conf.template.starttime)
+    // console.log((a-conf.template.starttime)/1000)
+    //判断是否超过2小时
     if(new Date().getTime() - conf.template.starttime > conf.template.expires_in*1000){
         await utils.getAccess_token()
-
-        // console.log('hahha'+result.then())
-        console.log('access_token',conf.template.access_token);
+        // console.log('access_token',conf.template.access_token);
     }
     let reqData = {
-        "touser": "ofn2t4ilorJDG2X4xelxF_U1VyDQ",
+        "touser": openid,
         "template_id": conf.template.template_id1,
-        "page": "pages/index",
-        "form_id": "1526200635345",
+        "page": "pages/index/index",
+        "form_id": form_id,
         "data": {
             "keyword1": {
-                "value": "339208499",
+                "value": bookname,
                 "color": "#173177"
             },
             "keyword2": {
@@ -53,7 +49,7 @@ async function sendTemplate1(req,res) {
         },
         "emphasis_keyword": "keyword1.DATA"
     }
-    await new Promise(function (resolve,reject) {
+    return await new Promise(function (resolve,reject) {
         request({
             url:'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token='
             + conf.template.access_token,
@@ -61,15 +57,14 @@ async function sendTemplate1(req,res) {
             json:true,
             body:reqData,
         },function (err,response,body) {
-            console.log(body)
-            resolve("象征意义的发一个")
+            // console.log(body)
+            resolve(body)
             // res.send({errorcode: '0', msg: '1'});
         })
     })
-    res.send({errorcode: '0', msg: result});
-
 }
-async function sendTemplate2(form_id){
+//借阅申请模版
+async function sendTemplate2(form_id,bookname){
     let a = new Date().getTime();
     console.log( a,conf.template.starttime)
     console.log((a-conf.template.starttime)/1000)
@@ -79,14 +74,15 @@ async function sendTemplate2(form_id){
         // console.log('hahha'+result.then())
         console.log('access_token',conf.template.access_token);
     }
+    console.log("formid"+form_id)
     let reqData = {
-        "touser": "ofn2t4ilorJDG2X4xelxF_U1VyDQ",
+        "touser": "ofn2t4pirVpilrzHK0qaQgT1-gYU",
         "template_id": conf.template.template_id2,
         "page": "pages/index",
         "form_id": form_id,
         "data": {
             "keyword1": {
-                "value": "浪潮之巅",
+                "value": bookname,
                 "color": "#173177"
             },
             "keyword2": {
@@ -118,7 +114,37 @@ async function sendTemplate2(form_id){
         })
     })
 }
+//借阅申请邮箱通知
+function sendApplyEmail(bookname){
+    const params = {
+        host: 'smtp.163.com', // 设置服务
+        port: 465, // 端口
+        sercure: true, // 是否使用TLS，true，端口为465，否则其他或者568
+        auth: {
+            user: '13477036346@163.com', // 邮箱和密码
+            pass: 'wy13477036346'
+        }
+    }
+
+// 邮件信息
+    const mailOptions = {
+        from: '"微信小程序"13477036346@163.com', // 发送邮箱
+        to: 'lxtx2013@foxmail.com', // 接受邮箱
+        subject: '借阅申请', // 标题
+        text: bookname // 内容
+    }
+
+// 发送邮件
+    const transporter = nodemailer.createTransport(params)
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            return console.log(error);
+        }
+        console.log('Message %s sent: %s', info.messageId, info.response);
+    })
+}
 module.exports ={
     sendTemplate1,
     sendTemplate2,
+    sendApplyEmail,
 }

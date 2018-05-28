@@ -28,6 +28,10 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.ENUM('1','0'),
       allowNull: true,
       defaultValue: '0'
+    },
+    form_id:{
+        type: DataTypes.STRING(20),
+        allowNull: true
     }
   }, {
     tableName: 'borrow_record',
