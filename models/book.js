@@ -38,6 +38,6 @@ module.exports = function(sequelize, DataTypes) {
     }
   }, {
     tableName: 'book',
-      timestamps:false,
+      timestamps:false
   });
 };

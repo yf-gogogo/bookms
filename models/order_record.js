@@ -1,8 +1,8 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('borrow_record', {
-    borrow_id: {
+  return sequelize.define('order_record', {
+    order_id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
       primaryKey: true,
@@ -16,21 +16,12 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER(11),
       allowNull: true
     },
-    borrow_date: {
+    order_date: {
       type: DataTypes.DATE,
       allowNull: true
-    },
-    return_date: {
-      type: DataTypes.DATE,
-      allowNull: true
-    },
-    borrow_status: {
-      type: DataTypes.ENUM('1','0'),
-      allowNull: true,
-      defaultValue: '0'
     }
   }, {
-    tableName: 'borrow_record',
+    tableName: 'order_record',
       timestamps:false
   });
 };
