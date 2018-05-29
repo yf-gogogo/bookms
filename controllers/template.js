@@ -63,8 +63,8 @@ async function sendTemplate1(form_id,bookname,openid){
         })
     })
 }
-//借阅申请模版
-async function sendTemplate2(form_id,bookname){
+//还书提醒模版
+async function sendTemplate2(form_id,bookname,openid){
     let a = new Date().getTime();
     console.log( a,conf.template.starttime)
     console.log((a-conf.template.starttime)/1000)
@@ -76,7 +76,7 @@ async function sendTemplate2(form_id,bookname){
     }
     console.log("formid"+form_id)
     let reqData = {
-        "touser": "ofn2t4pirVpilrzHK0qaQgT1-gYU",
+        "touser": openid,
         "template_id": conf.template.template_id2,
         "page": "pages/index",
         "form_id": form_id,
@@ -100,7 +100,7 @@ async function sendTemplate2(form_id,bookname){
         },
         "emphasis_keyword": "keyword1.DATA"
     }
-    await new Promise(function (resolve,reject) {
+    return await new Promise(function (resolve,reject) {
         request({
             url:'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token='
             + conf.template.access_token,

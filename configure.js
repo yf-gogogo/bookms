@@ -13,7 +13,7 @@ var template = {
     //图书可取提醒
     "template_id1" :"YQhz9IvhGLaYl9Tk96rgysFioELOBkFxOrchCrjqdVE",
     //图书借阅提醒
-    "template_id2" :"uoZMM_hHa_e5s3i1KW1DHKFcV0EBqrL9rEhUITwdryI",
+    "template_id2" :"LGVI1P5vjEi-Xw5HyMn25SqnQXtkO-ojk_l4fUOAUfI",
     "starttime" : 0,
     "expires_in" : 7200,
     "access_token" :null,

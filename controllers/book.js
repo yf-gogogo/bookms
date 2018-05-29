@@ -38,9 +38,9 @@ async function listBorrowed(req,res){
     let result = await s_book_borrow.findAll({
         attributes:['borrow_id','borrow_status','borrow_date','form_id'],
         where:{
-            //筛选申请借书和申请还书
+            //筛选申请借书和
             borrow_status:{
-                [Op.in]: ['0','2']
+                [Op.in]: ['0','1']
             }
         },
         include:[{
@@ -58,7 +58,31 @@ async function listBorrowed(req,res){
     }else{
         res.json({ errorcode: '1', msg: '' });
     }
-
+}
+async function listReturned(req,res){
+    let result = await s_book_borrow.findAll({
+        attributes:['borrow_id','book_id','borrow_status','borrow_date','form_id'],
+        where:{
+            //筛选申请还书和
+            borrow_status:{
+                [Op.in]: ['3','4']
+            }
+        },
+        include:[{
+            model:s_book,
+            attributes:['book_name','book_cover'],
+            where:{book_id:DataTypes.col('borrow_record.book_id')}
+        },{
+            model:s_user,
+            attributes:['user_name','user_cardid','openid'],
+            where:{user_id:DataTypes.col('borrow_record.user_id')}
+        }]
+    })
+    if(result.length > 0){
+        res.json({ errorcode: '0', msg: result });
+    }else{
+        res.json({ errorcode: '1', msg: '' });
+    }
 }
 //根据user_id查借阅记录
 s_book_borrow.belongsTo(s_book,{foreignKey:'book_id'})
@@ -69,10 +93,11 @@ function getBorrowListByUserid(req,res) {
         attributes:['borrow_id','book_id','borrow_status','borrow_date'],
         where:{
             user_id:user_id,
-            borrow_status:{
-                [Op.in]: ['0','1','2']
-            }
+            // borrow_status:{
+            //     [Op.in]: ['0','1','2','3','4']
+            // }
         },
+        order:[['borrow_status','DESC']],
         include:{
             model:s_book,
             attributes:['book_name','book_cover'],
@@ -184,20 +209,23 @@ function addOrderRecord(req,res){
     })
 }
 //根据bookid和userid查询借阅记录
-function getBorrowRecordByid(req,res){
+function getBorrowingByUserid(req,res){
     var user_id = req.query.user_id;
-    var book_id = req.query.book_id;
-    s_book_borrow.findOne({
+    // var book_id = req.query.book_id;
+    s_book_borrow.findAll({
         attributes:['book_id'],
         where:{
             user_id:user_id,
-            book_id:book_id
+            // book_id:book_id
+            borrow_status:{
+                [Op.notIn]: ['5']
+            }
         }
 
     }).then(result =>{
-
+        // console.log(result)
         if (result != null) {
-            res.json({ errorcode: '0', msg: result.dataValues });
+            res.json({ errorcode: '0', msg: result });
         } else {
             res.json({ errorcode: '1', msg: 'no record' });
         }
@@ -238,7 +266,7 @@ async function getAllInfo(req,res) {
             user_id:user_id,
             book_id:book_id,
             borrow_status:{
-                [Op.in]: ['0','1','2']
+                [Op.notIn]: ['5']
             }
         }
 
@@ -256,7 +284,7 @@ async function getAllInfo(req,res) {
         where:{
             book_id:book_id,
             borrow_status:{
-                [Op.in]: ['0','1','2']
+                [Op.notIn]: ['5']
             }
         }
     })
@@ -293,8 +321,8 @@ function getBookByName(req,res){
 }
 //根据借阅id删除借阅记录
 async function removeBorrowRecordByBorrowid(req,res){
-    let borrow_id = req.query.borrow_id;
-    let book_id = req.query.book_id;
+    let borrow_id = req.body.borrow_id;
+    let book_id = req.body.book_id;
     //删除借书记录
     let result = await s_book_borrow.destroy({
         where:{
@@ -319,12 +347,12 @@ async function removeBorrowRecordByBorrowid(req,res){
     res.json({ errorcode: '0', msg: result })
 }
 //根据借阅id记录申请还书
-async function returnBorrowApply(req,res){
+async function returnApply(req,res){
     let borrow_id = req.body.borrow_id;
     let book_name = req.body.book_name;
     let form_id = req.body.form_id;
     let result = await s_book_borrow.update({
-        borrow_status:'2',
+        borrow_status:'3',
         form_id:form_id,
     },{
         where:{
@@ -332,21 +360,7 @@ async function returnBorrowApply(req,res){
         }
     })
     template.sendApplyEmail('还书申请',book_name)
-    // //获取当前书的剩余数量
-    // let result1 = await s_book.findOne({
-    //     attributes:['current_num'],
-    //     where:{
-    //         book_id:book_id
-    //     }
-    // })
-    // //更新剩余书数量
-    // await s_book.update({
-    //     current_num:result1.dataValues.current_num+1
-    // },{
-    //     where:{
-    //         book_id:book_id
-    //     }
-    // })
+
     res.send(result)
 }
 module.exports = {
@@ -356,11 +370,12 @@ module.exports = {
     addOrderRecord,
     getBorrowListByUserid,
     getOrderListByUserid,
-    getBorrowRecordByid,
+    getBorrowingByUserid,
     getOrderRecordByid,
     getBookByName,
     getAllInfo,
     removeBorrowRecordByBorrowid,
     listBorrowed,
-    returnBorrowApply,
+    listReturned,
+    returnApply,
 };
