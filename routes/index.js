@@ -30,5 +30,5 @@ router.delete('/cancelborrow',api_book.removeBorrowRecordByBorrowid);
 //同意借书
 router.put('/sendagree',api_manage.agreeBorrow);
 //根据借阅id还书
-router.put('/returnbook',api_book.updateBorrowStatus);
+router.put('/returnbook',api_book.returnBorrowApply);
 module.exports = router;

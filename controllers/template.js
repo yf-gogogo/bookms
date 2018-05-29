@@ -35,15 +35,15 @@ async function sendTemplate1(form_id,bookname,openid){
                 "color": "#173177"
             },
             "keyword2": {
-                "value": "2015年01月05日 12:30",
+                "value": "2018年01月05日 12:30",
                 "color": "#173177"
             },
             "keyword3": {
-                "value": "粤海喜来登酒店",
+                "value": "工程中心3楼020号",
                 "color": "#173177"
             },
             "keyword4": {
-                "value": "广州市天河区天河路208号",
+                "value": "如果人不在直接放到座位就行",
                 "color": "#173177"
             }
         },
@@ -115,7 +115,7 @@ async function sendTemplate2(form_id,bookname){
     })
 }
 //借阅申请邮箱通知
-function sendApplyEmail(bookname){
+function sendApplyEmail(title,content){
     const params = {
         host: 'smtp.163.com', // 设置服务
         port: 465, // 端口
@@ -130,8 +130,8 @@ function sendApplyEmail(bookname){
     const mailOptions = {
         from: '"微信小程序"13477036346@163.com', // 发送邮箱
         to: 'lxtx2013@foxmail.com', // 接受邮箱
-        subject: '借阅申请', // 标题
-        text: bookname // 内容
+        subject: title, // 标题
+        text: content // 内容
     }
 
 // 发送邮件
