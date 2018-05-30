@@ -124,7 +124,7 @@ s_book_order.belongsTo(s_book,{foreignKey:'book_id'})
 function getOrderListByUserid(req,res) {
     var user_id = req.query.user_id;
     s_book_order.findAll({
-        attributes:['book_id','order_date'],
+        attributes:['order_id','book_id','order_date'],
         where:{
             user_id:user_id,
         },
