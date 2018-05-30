@@ -105,12 +105,14 @@ function getBorrowListByUserid(req,res) {
         }
 
     }).then(result =>{
-        // console.log(result)
-        var list = []
+        console.log(new Date('2018-5-30 13:11:06').toLocaleString())
+        // var list = []
         if (result.length > 0) {
             // for(let i=0;i<result.length;i++){
-            //     list.push(result[i].book)
+            //     list.push(result[i].dataValues)
+            //     list[i].borrow_date = list[i].borrow_date.toLocaleString()
             // }
+
             res.json({ errorcode: '0', msg: result });
         } else {
             res.json({ errorcode: '1', msg: result });
@@ -156,7 +158,7 @@ async function addBorrowRecord(req,res){
         let result1 = await s_book_borrow.create({
             user_id: user_id,
             book_id: book_id,
-            borrow_date: new Date(),
+            borrow_date: new Date().toLocaleString(),
             form_id:form_id
         })
 
@@ -190,7 +192,7 @@ function addOrderRecord(req,res){
         defaults:{
             user_id:user_id,
             book_id:book_id,
-            order_date:new Date()
+            order_date:new Date().toLocaleString()
         }
 
     }).spread((user, created) => {
@@ -236,7 +238,7 @@ function getOrderRecordByid(req,res){
     var user_id = req.query.user_id;
     var book_id = req.query.book_id;
     s_book_order.findOne({
-        attributes:['book_id'],
+        attributes:['order_id','book_id'],
         where:{
             user_id:user_id,
             book_id:book_id
@@ -346,6 +348,17 @@ async function removeBorrowRecordByBorrowid(req,res){
     })
     res.json({ errorcode: '0', msg: result })
 }
+//根据预约id删除预约记录
+async function removeOrderByOrderId(req,res) {
+    let order_id = req.body.order_id
+    //删除借书记录
+    let result = await s_book_order.destroy({
+        where:{
+            order_id:order_id
+        }
+    })
+    res.json({ errorcode: '0', msg: result })
+}
 //根据借阅id记录申请还书
 async function returnApply(req,res){
     let borrow_id = req.body.borrow_id;
@@ -375,6 +388,7 @@ module.exports = {
     getBookByName,
     getAllInfo,
     removeBorrowRecordByBorrowid,
+    removeOrderByOrderId,
     listBorrowed,
     listReturned,
     returnApply,

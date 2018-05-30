@@ -28,7 +28,8 @@ router.get('/getorderbook',api_book.getOrderRecordByid);
 router.get('/searchbook',api_book.getBookByName);
 //删除借阅记录
 router.delete('/cancelborrow',api_book.removeBorrowRecordByBorrowid);
-
+//删除预定记录
+router.delete('/cancelorder',api_book.removeOrderByOrderId)
 //同意借书
 router.put('/agreeborrow',api_manage.agreeBorrow);
 //借书完成

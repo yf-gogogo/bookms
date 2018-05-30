@@ -17,7 +17,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     order_date: {
-      type: DataTypes.DATE,
+      type: DataTypes.STRING(20),
       allowNull: true
     }
   }, {

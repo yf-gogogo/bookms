@@ -17,15 +17,15 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     borrow_date: {
-      type: DataTypes.DATE,
+      type: DataTypes.STRING(20),
       allowNull: true
     },
     return_date: {
-      type: DataTypes.DATE,
+      type: DataTypes.STRING(20),
       allowNull: true
     },
     borrow_status: {
-      type: DataTypes.ENUM('1','0'),
+      type: DataTypes.ENUM('5','4','3','2','1','0'),
       allowNull: true,
       defaultValue: '0'
     },
@@ -34,7 +34,7 @@ module.exports = function(sequelize, DataTypes) {
         allowNull: true
     }
   }, {
-    tableName: 'borrow_record',
+      tableName: 'borrow_record',
       timestamps:false
   });
 };
