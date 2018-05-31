@@ -171,7 +171,7 @@ async function addBorrowRecord(req,res){
             }
         })
 
-        // template.sendApplyEmail(result.book_name)
+        template.sendApplyEmail('借阅申请',result.book_name)
         if (result2 == null) {
             res.json({errorcode: '1', msg: 'failure'});
         } else {
@@ -215,7 +215,7 @@ function getBorrowingByUserid(req,res){
     var user_id = req.query.user_id;
     // var book_id = req.query.book_id;
     s_book_borrow.findAll({
-        attributes:['book_id'],
+        attributes:['book_id','borrow_status'],
         where:{
             user_id:user_id,
             // book_id:book_id
