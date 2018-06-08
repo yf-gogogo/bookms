@@ -35,7 +35,7 @@ async function sendTemplate1(form_id,bookname,openid){
                 "color": "#173177"
             },
             "keyword2": {
-                "value": "2018年01月05日 12:30",
+                "value": new Date().toLocaleDateString(),
                 "color": "#173177"
             },
             "keyword3": {
@@ -43,7 +43,7 @@ async function sendTemplate1(form_id,bookname,openid){
                 "color": "#173177"
             },
             "keyword4": {
-                "value": "如果人不在直接放到座位就行",
+                "value": "请及时取书",
                 "color": "#173177"
             }
         },
@@ -78,7 +78,7 @@ async function sendTemplate2(form_id,bookname,openid){
     let reqData = {
         "touser": openid,
         "template_id": conf.template.template_id2,
-        "page": "pages/index",
+        "page": "pages/index/index",
         "form_id": form_id,
         "data": {
             "keyword1": {
@@ -86,15 +86,15 @@ async function sendTemplate2(form_id,bookname,openid){
                 "color": "#173177"
             },
             "keyword2": {
-                "value": "2015年01月05日 12:30",
+                "value": new Date().toLocaleDateString(),
                 "color": "#173177"
             },
             "keyword3": {
-                "value": "粤海喜来登酒店",
+                "value": "工程中心",
                 "color": "#173177"
             },
             "keyword4": {
-                "value": "广州市天河区天河路208号",
+                "value": "可以来还书了",
                 "color": "#173177"
             }
         },
