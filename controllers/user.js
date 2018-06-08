@@ -17,16 +17,22 @@ function getUserBywxid(req,res) {
 
 }
 function updateUserInfo(req,res){
+    // console.log(req.body);
     var user_id = req.body.user_id;
     var user_name = req.body.user_name;
     var user_cardid = req.body.user_cardid;
     var user_email = req.body.user_email;
     var user_phone = req.body.user_phone;
+    var is_admin = '0';
+    if(req.body.switch){
+        is_admin = '1';
+    }
     s_user.update({
         user_name:user_name,
         user_cardid:user_cardid,
         user_phone:user_phone,
-        user_email:user_email
+        user_email:user_email,
+        is_admin:is_admin
     },{
         where:{
             user_id:user_id

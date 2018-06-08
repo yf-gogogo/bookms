@@ -170,8 +170,20 @@ async function addBorrowRecord(req,res){
                 book_id: book_id
             }
         })
+        let email = await s_user.findAll({
+            attributes:['user_email'],
+            where:{
+                is_admin:1
+            }
+        })
+        let listemail = [];
 
-        template.sendApplyEmail('借阅申请',result.book_name)
+        for(let i=0;i<email.length;i++){
+            // console.log(email[i])
+            listemail.push(email[i].dataValues.user_email);
+        }
+        console.log(listemail);
+        template.sendApplyEmail('借阅申请',result.book_name,listemail);
         if (result2 == null) {
             res.json({errorcode: '1', msg: 'failure'});
         } else {
@@ -372,7 +384,19 @@ async function returnApply(req,res){
             borrow_id:borrow_id
         }
     })
-    template.sendApplyEmail('还书申请',book_name)
+    let email = await s_user.findAll({
+        attributes:['user_email'],
+        where:{
+            is_admin:1
+        }
+    })
+    let listemail = [];
+
+    for(let i=0;i<email.length;i++){
+        listemail.push(email[i].dataValues);
+    }
+    console.log(listemail);
+    template.sendApplyEmail('还书申请',book_name,listemail)
 
     res.send(result)
 }

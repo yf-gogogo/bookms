@@ -115,7 +115,7 @@ async function sendTemplate2(form_id,bookname,openid){
     })
 }
 //借阅申请邮箱通知
-function sendApplyEmail(title,content){
+function sendApplyEmail(title,content,manageEmail){
     const params = {
         host: 'smtp.163.com', // 设置服务
         port: 465, // 端口
@@ -129,7 +129,7 @@ function sendApplyEmail(title,content){
 // 邮件信息
     const mailOptions = {
         from: '"微信小程序"13477036346@163.com', // 发送邮箱
-        to: 'lxtx2013@foxmail.com', // 接受邮箱
+        to: manageEmail, // 接受邮箱
         subject: title, // 标题
         text: content // 内容
     }
