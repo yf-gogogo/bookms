@@ -393,7 +393,7 @@ async function returnApply(req,res){
     let listemail = [];
 
     for(let i=0;i<email.length;i++){
-        listemail.push(email[i].dataValues);
+        listemail.push(email[i].dataValues.user_email);
     }
     console.log(listemail);
     template.sendApplyEmail('还书申请',book_name,listemail)

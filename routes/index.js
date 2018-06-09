@@ -10,6 +10,7 @@ router.get('/', function(req, res, next) {
 });
 router.get('/userauth',api_user.getOpenid);
 router.get('/userinfo',api_user.getUserBywxid);
+router.get('/getuserid',api_user.getUseridByOpenid);
 router.put('/userinfo',api_user.updateUserInfo);
 router.get('/booklist',api_book.getBookList);
 router.get('/bookinfo',api_book.getBookInfoByBookid);

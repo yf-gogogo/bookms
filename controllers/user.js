@@ -12,9 +12,20 @@ function getUserBywxid(req,res) {
             user_id:user_id
         }
     }).then(result =>{
-        res.send({errorcode: '0', msg: result.dataValues});
+        res.json({errorcode: '0', msg: result.dataValues});
     })
 
+}
+async function getUseridByOpenid(req,res) {
+    let openid = req.query.openid;
+    let result = await s_user.findOne({
+        attribute:['user_id'],
+        where:{
+            openid:openid
+        }
+    });
+    console.log(result.dataValues)
+    res.json({errorcode: '0', msg: result});
 }
 function updateUserInfo(req,res){
     // console.log(req.body);
@@ -84,4 +95,5 @@ module.exports = {
     getUserBywxid,
     updateUserInfo,
     getOpenid,
+    getUseridByOpenid,
 };
