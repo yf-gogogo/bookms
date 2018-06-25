@@ -9,7 +9,7 @@ module.exports = function(sequelize, DataTypes) {
       autoIncrement: true
     },
     user_name: {
-      type: DataTypes.STRING(20),
+      type: DataTypes.STRING(255),
       allowNull: true
     },
     user_cardid: {
@@ -26,11 +26,11 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: '0'
     },
     user_email: {
-      type: DataTypes.STRING(20),
+      type: DataTypes.STRING(255),
       allowNull: true
     },
     user_nickname: {
-      type: DataTypes.STRING(20),
+      type: DataTypes.STRING(255),
       allowNull: true
     },
     session_key: {
@@ -40,9 +40,16 @@ module.exports = function(sequelize, DataTypes) {
     openid: {
       type: DataTypes.STRING(50),
       allowNull: false
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: true
     }
   }, {
-    tableName: 'user',
-      timestamps:false
+    tableName: 'user'
   });
 };

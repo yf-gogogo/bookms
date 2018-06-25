@@ -17,11 +17,11 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     borrow_date: {
-      type: DataTypes.STRING(20),
+      type: DataTypes.STRING(255),
       allowNull: true
     },
     return_date: {
-      type: DataTypes.STRING(20),
+      type: DataTypes.STRING(255),
       allowNull: true
     },
     borrow_status: {
@@ -29,12 +29,19 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true,
       defaultValue: '0'
     },
-    form_id:{
-        type: DataTypes.STRING(20),
-        allowNull: true
+    form_id: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: true
     }
   }, {
-      tableName: 'borrow_record',
-      timestamps:false
+    tableName: 'borrow_record'
   });
 };
