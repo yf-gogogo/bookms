@@ -3,6 +3,7 @@ var router = express.Router();
 var api_user = require('../controllers/user')
 var api_book = require('../controllers/book')
 var api_manage = require('../controllers/manage')
+var crypto = require('crypto');
 /* GET home page. */
 router.get('/', function(req, res, next) {
     console.log(new Date().toLocaleString())
@@ -44,5 +45,17 @@ router.put('/returncomplete',api_manage.returnComplete);
 //管理员申请管理
 router.get('/allborrowbook',api_book.listBorrowed);
 router.get('/allreturnbook',api_book.listReturned);
-
+/*******pc网页*********/
+//添加书籍
+router.post('/addbook',api_book.addBook);
+//获取所有人借书情况
+router.get('/listborrow',api_book.listAllBorrowed);
+//获取所有图书
+router.get('/listbookforpc',api_book.getBookListForPC);
+//删除图书
+router.delete('/deletebook',api_book.deleteBookForPC);
+//管理员登陆
+router.get('/manage',api_user.manageLoginForPC);
+//判断登陆状态
+router.get('/islogin',api_user.isloginForPC);
 module.exports = router;

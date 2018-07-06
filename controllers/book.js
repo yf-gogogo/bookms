@@ -12,6 +12,7 @@ var s_user = f_user(db_seq,DataTypes);
 var template = require('./template')
 //返回图书列表
 function getBookList(req,res) {
+
     s_book.findAll().then(result =>{
         // console.log(result);
         res.send(result);
@@ -400,6 +401,71 @@ async function returnApply(req,res){
 
     res.send(result)
 }
+//添加图书
+async function addBook(req,res){
+    let book_name = req.body.book_name;
+    let book_writer = req.body.book_writer;
+    let pub_company = req.body.pub_company;
+    let current_num = req.body.current_num;
+    let book_des = req.body.book_des;
+    let pub_date = req.body.pub_date;
+    let book_cover = req.body.book_cover;
+
+    let result = await s_book.create(req.body);
+    res.json(result);
+}
+//获取所有人的借阅记录
+async function listAllBorrowed(req,res){
+    let limit = req.query.limit;
+    let offset = req.query.offset;
+    let result = await s_book_borrow.findAndCountAll({
+        attributes:['borrow_status','borrow_date'],
+        limit:limit*1,
+        offset:offset*1,
+        where:{
+            //筛选申请借书和
+            borrow_status:{
+                [Op.in]: ['0','1','2','3','4']
+            },
+
+        },
+        include:[{
+            model:s_book,
+            attributes:['book_name','book_cover'],
+            where:{book_id:DataTypes.col('borrow_record.book_id')}
+        },{
+            model:s_user,
+            attributes:['user_name','user_cardid'],
+            where:{user_id:DataTypes.col('borrow_record.user_id')}
+        }]
+    });
+    let total = result.count;
+
+    res.json({'total':total,'rows':result.rows});
+
+}
+//PC端返回图书列表
+async function getBookListForPC(req,res) {
+    let limit = req.query.limit;
+    let offset = req.query.offset;
+    let result = await s_book.findAndCountAll({
+        limit:limit*1,
+        offset:offset*1,
+    });
+    let total = result.count;
+
+    res.json({'total':total,'rows':result.rows});
+}
+//PC端删除书籍
+async function deleteBookForPC(req,res){
+    let book_id = req.body.book_id;
+    let result = s_book.destroy({
+        where:{
+            book_id:book_id
+        }
+    });
+    res.json(result);
+}
 module.exports = {
     getBookList,
     getBookInfoByBookid,
@@ -416,4 +482,8 @@ module.exports = {
     listBorrowed,
     listReturned,
     returnApply,
+    addBook,
+    listAllBorrowed,
+    getBookListForPC,
+    deleteBookForPC,
 };

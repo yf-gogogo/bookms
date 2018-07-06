@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>图书借阅管理</title>
+
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/jquery.bootstrapvalidator/0.5.3/css/bootstrapValidator.min.css" rel="stylesheet">
+
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery.bootstrapvalidator/0.5.3/js/bootstrapValidator.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <section>
+                <div class="col-sm-8 col-sm-offset-2">
+                    <div class="page-header">
+                        <h2>工程中心图书借阅管理</h2>
+                    </div>
+
+                    <form id="defaultForm" method="post" class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">密码</label>
+                            <div class="col-sm-4">
+                                <input type="password" class="form-control" name="password" placeholder="输入登陆密码" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-9 col-sm-offset-3">
+                                <button type="submit" class="btn btn-primary">登陆</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#defaultForm').bootstrapValidator({
+        container: 'tooltip',
+//        trigger: 'blur',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            password: {
+                validators: {
+                    stringLength: {
+                        enabled: false,
+                        min: 4,
+                        message: 'The pwd must be more than 5 characters'
+                    },
+                    notEmpty: {
+                        message: 'The pwd is required'
+                    }
+                }
+            }
+        }
+    }).on('success.form.bv', function(e) {
+        // Prevent form submission
+        e.preventDefault();
+
+        // Get the form instance
+        var $form = $(e.target);
+
+        // Get the BootstrapValidator instance
+        var bv = $form.data('bootstrapValidator');
+
+        // Use Ajax to submit form data
+        $.get('/manage', $form.serialize(), function(result) {
+            console.log(result);
+            if(result.errcode == 0){
+                $(location).attr('href','/');
+            }else {
+                alert("密码错误")
+            }
+        }, 'json');
+    });
+});
+</script>
+</body>
+</html>

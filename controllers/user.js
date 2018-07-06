@@ -4,6 +4,7 @@ var f_user = require('../models/user');
 var s_user = f_user(db_seq,DataTypes);
 var https = require('https');
 var conf = require('../configure');
+var crypto = require('crypto');
 
 function getUserBywxid(req,res) {
     var user_id = req.query.user_id;
@@ -91,9 +92,32 @@ function getOpenid(req,res){
         console.log(" error: " + e.message);
     }).end();
 }
+/*****管理员登陆*****/
+async function manageLoginForPC(req,res){
+    let password = req.query.password;
+    if(password == 'nercel2018'){
+        let md5 = crypto.createHash('md5').update(password).digest('hex');
+        res.cookie('login', md5.toString(), { maxAge: 24*60*60*1000,httpOnly: true });
+        res.json({'errcode':0});
+    } else {
+        res.json({'errcode':1});
+    }
+}
+/*****登录状态*****/
+async function isloginForPC(req,res){
+    let cookie = req.cookies.login;
+    console.log('cookie',cookie);
+    if(cookie != null && cookie == crypto.createHash('md5').update('nercel2018').digest('hex')){
+        res.json({'errcode':0});
+    }else{
+        res.json({'errcode':1});
+    }
+}
 module.exports = {
     getUserBywxid,
     updateUserInfo,
     getOpenid,
     getUseridByOpenid,
+    manageLoginForPC,
+    isloginForPC,
 };
