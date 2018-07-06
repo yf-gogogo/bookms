@@ -18,17 +18,18 @@
 
     <script type="text/javascript" src="./javascripts/table.js"></script>
 
-    <script>
-        let cookie = $.cookie('login');
-        $.get('/islogin',function (result) {
-            console.log(result)
-            if(result.errcode == 1){
-                $(location).attr('href','/login.html');
-            }
-        },'json')
-    </script>
 </head>
 <body>
+<script type="text/javascript">
+    var path = '';
+    let cookie = $.cookie('login');
+    $.get(path+'/islogin',function (result) {
+        console.log(result)
+        if(result.errcode == 1){
+            $(location).attr('href',path+'/login.html');
+        }
+    },'json')
+</script>
 <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
@@ -156,7 +157,7 @@
 <script type="text/javascript">
     $("#ISBN").bind("input",function(event){
         if($("#ISBN").val().length == 13){
-            $.get('/getbookinfobyisbn', {'isbn':$("#ISBN").val()}, function(result,status) {
+            $.get(path+'/getbookinfobyisbn', {'isbn':$("#ISBN").val()}, function(result,status) {
                 if(status == 'success' && result.title != null){
                     console.log(result.summary);
                     $('input#book_name').val(result.title);
@@ -247,7 +248,7 @@ $(document).ready(function() {
             var bv = $form.data('bootstrapValidator');
 
             // Use Ajax to submit form data
-            $.post('/addbook', $form.serialize(), function(result) {
+            $.post('path/addbook', $form.serialize(), function(result) {
                 console.log(result);
                 $form.bootstrapValidator('resetForm', true);
                 $('#tipinfo').text("添加成功");

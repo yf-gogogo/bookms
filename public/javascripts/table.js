@@ -1,3 +1,4 @@
+var path = '';
 $(document).ready(function() {
     let oTableInit = new Object();
     //得到查询的参数
@@ -39,7 +40,7 @@ $(document).ready(function() {
                 values: [row.borrow_id]
             });
             $.ajax({
-                url:'/cancelborrow',
+                url:path+'/cancelborrow',
                 type:'DELETE',
                 data:{'book_id':row.book.book_id,'borrow_id':row.borrow_id},
                 success:function (data) {
@@ -54,7 +55,7 @@ $(document).ready(function() {
         }
     };
     $('#table').bootstrapTable({
-        url: '/listborrow',         //请求后台的URL（*）
+        url: path+'/listborrow',         //请求后台的URL（*）
         method: 'get',                      //请求方式（*）
         toolbar: '#toolbar',                //工具按钮用哪个容器
         striped: true,                      //是否显示行间隔色
@@ -111,7 +112,7 @@ $(document).ready(function() {
                 values: [row.book_id]
             });
             $.ajax({
-                url:'/deletebook',
+                url:path+'/deletebook',
                 type:'DELETE',
                 data:{'book_id':row.book_id},
                 success:function (data) {

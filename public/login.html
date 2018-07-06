@@ -40,6 +40,7 @@
     </div>
 
 <script type="text/javascript">
+    var path = '';
 $(document).ready(function() {
     $('#defaultForm').bootstrapValidator({
         container: 'tooltip',
@@ -74,10 +75,10 @@ $(document).ready(function() {
         var bv = $form.data('bootstrapValidator');
 
         // Use Ajax to submit form data
-        $.get('/manage', $form.serialize(), function(result) {
+        $.get(path+'/manage', $form.serialize(), function(result) {
             console.log(result);
             if(result.errcode == 0){
-                $(location).attr('href','/');
+                $(location).attr('href',path+'/');
             }else {
                 alert("密码错误")
             }
