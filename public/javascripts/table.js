@@ -28,6 +28,31 @@ $(document).ready(function() {
         }
 
     }
+    window.cancelBorrow = {
+        'click .like': function (e, value, row, index) {
+            alert('You click like action, row: ' + JSON.stringify(row));
+        },
+        'click .remove': function (e, value, row, index) {
+            // alert('You click like action, row: ' + JSON.stringify(row));
+            $('#table').bootstrapTable('remove', {
+                field: 'borrow_id',
+                values: [row.borrow_id]
+            });
+            $.ajax({
+                url:'/cancelborrow',
+                type:'DELETE',
+                data:{'book_id':row.book.book_id,'borrow_id':row.borrow_id},
+                success:function (data) {
+                    // alert(JSON.stringify(data));
+                    $('#tipinfo').text("删除成功");
+                    $('.bs-example-modal-sm').modal('show');
+                },
+                error:function (err) {
+                    alert(err);
+                }
+            })
+        }
+    };
     $('#table').bootstrapTable({
         url: '/listborrow',         //请求后台的URL（*）
         method: 'get',                      //请求方式（*）
@@ -66,7 +91,13 @@ $(document).ready(function() {
             field: 'borrow_status',
             title: '借阅状态',
             formatter:statusFormatter
-        }, ]
+        }, {
+            field: 'operate',
+            title: '操作',
+            align: 'center',
+            events: cancelBorrow,
+            formatter: operateFormatter
+        }]
     });
 
     window.operateEvents = {

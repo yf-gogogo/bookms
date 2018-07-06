@@ -420,19 +420,18 @@ async function listAllBorrowed(req,res){
     let limit = req.query.limit;
     let offset = req.query.offset;
     let result = await s_book_borrow.findAndCountAll({
-        attributes:['borrow_status','borrow_date'],
+        attributes:['borrow_id','borrow_status','borrow_date'],
         limit:limit*1,
         offset:offset*1,
         where:{
-            //筛选申请借书和
+            //筛选申请借书
             borrow_status:{
                 [Op.in]: ['0','1','2','3','4']
             },
-
         },
         include:[{
             model:s_book,
-            attributes:['book_name','book_cover'],
+            attributes:['book_id','book_name','book_cover'],
             where:{book_id:DataTypes.col('borrow_record.book_id')}
         },{
             model:s_user,
