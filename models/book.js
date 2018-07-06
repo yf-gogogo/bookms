@@ -25,7 +25,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     book_des: {
-      type: DataTypes.STRING(1000),
+      type: DataTypes.TEXT,
       allowNull: true
     },
     pub_date: {

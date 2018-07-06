@@ -58,4 +58,6 @@ router.delete('/deletebook',api_book.deleteBookForPC);
 router.get('/manage',api_user.manageLoginForPC);
 //判断登陆状态
 router.get('/islogin',api_user.isloginForPC);
+//根据isbn获取书籍信息
+router.get('/getbookinfobyisbn',api_book.getBookInfoByISBN);
 module.exports = router;

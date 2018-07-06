@@ -9,7 +9,8 @@ var f_book_order = require('../models/order_record');
 var s_book_order = f_book_order(db_seq,DataTypes);
 var f_user = require('../models/user');
 var s_user = f_user(db_seq,DataTypes);
-var template = require('./template')
+var template = require('./template');
+var request = require('request');
 //返回图书列表
 function getBookList(req,res) {
 
@@ -466,6 +467,21 @@ async function deleteBookForPC(req,res){
     });
     res.json(result);
 }
+//根据ISBN查图书信息
+async function getBookInfoByISBN(req,res){
+    let isbn = req.query.isbn;
+    let result = await new Promise(function (resolve,reject) {
+        request({
+            url:'https://api.douban.com/v2/book/isbn/'+isbn,
+            json:true,
+        },function (err,response,body) {
+            // console.log(body)
+            resolve(body)
+            // res.send({errorcode: '0', msg: '1'});
+        })
+    });
+    res.json(result);
+}
 module.exports = {
     getBookList,
     getBookInfoByBookid,
@@ -486,4 +502,5 @@ module.exports = {
     listAllBorrowed,
     getBookListForPC,
     deleteBookForPC,
+    getBookInfoByISBN
 };

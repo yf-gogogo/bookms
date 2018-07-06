@@ -89,47 +89,58 @@
                         <div class="tab-pane" id="add-tab" >
                             <form id="accountForm" class="form-horizontal" style="margin-top: 20px;">
                                 <div class="form-group">
+                                    <label class="col-lg-3 control-label">ISBN</label>
+                                    <div class="col-lg-5">
+                                        <input type="text" class="form-control" id="ISBN" placeholder="输入ISBN快速查找">
+                                        </input>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="col-lg-3 control-label">书名</label>
                                     <div class="col-lg-5">
-                                        <input type="text" class="form-control" name="book_name" />
+                                        <input type="text" class="form-control" id="book_name" name="book_name" />
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-lg-3 control-label">作者</label>
                                     <div class="col-lg-5">
-                                        <input type="text" class="form-control" name="book_writer" />
+                                        <input type="text" class="form-control" id="book_writer" name="book_writer" />
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-lg-3 control-label">出版社</label>
                                     <div class="col-lg-5">
-                                        <input type="text" class="form-control" name="pub_company" />
+                                        <input type="text" class="form-control" id="pub_company" name="pub_company" />
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-lg-3 control-label">数量</label>
                                     <div class="col-lg-5">
-                                        <input type="text" class="form-control" name="current_num" />
+                                        <input type="text" class="form-control" id="current_num" name="current_num" />
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-lg-3 control-label">描述</label>
                                     <div class="col-lg-5">
-                                        <textarea class="form-control" rows="3" name="book_des"></textarea>
+                                        <textarea class="form-control" rows="3" id="book_des" name="book_des"></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-lg-3 control-label">出版日期</label>
                                     <div class="col-lg-5">
-                                        <input type="text" class="form-control" name="pub_date" />
+                                        <input type="text" class="form-control" id="pub_date" name="pub_date" />
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-lg-3 control-label">封面链接</label>
                                     <div class="col-lg-5">
-                                        <input type="text" class="form-control" name="book_cover" />
+                                        <input type="text" class="form-control" id="book_cover" name="book_cover" />
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <a id="imglink" target="_blank">预览</a>
                                     </div>
                                 </div>
+
                                 <div class="form-group">
                                     <div class="col-lg-5 col-lg-offset-3">
                                         <button type="submit" class="btn btn-primary">添加</button>
@@ -143,6 +154,25 @@
         </div>
     </div>
 <script type="text/javascript">
+    $("#ISBN").bind("input",function(event){
+        if($("#ISBN").val().length == 13){
+            $.get('/getbookinfobyisbn', {'isbn':$("#ISBN").val()}, function(result,status) {
+                if(status == 'success' && result.title != null){
+                    console.log(result.summary);
+                    $('input#book_name').val(result.title);
+                    $('input#book_writer').val(result.author.join());
+                    $('input#pub_company').val(result.publisher);
+                    $('input#current_num').val(1);
+                    $('textarea#book_des').val(result.summary);
+                    $('input#pub_date').val(result.pubdate);
+                    $('input#book_cover').val(result.images.small);
+                    $('a#imglink').attr('href',result.image);
+                }else {
+                    alert("自动获取书籍信息失败");
+                }
+            }, 'json');
+        }
+    });
 $(document).ready(function() {
     $('#accountForm')
         .bootstrapValidator({
